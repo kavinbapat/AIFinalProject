@@ -4,6 +4,12 @@ from keras import datasets, layers, models, preprocessing
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
 
+'''
+----------------------------
+Set up Image Data Generator
+----------------------------
+'''
+
 train_datagen = ImageDataGenerator(
     rescale=1./255,  # Normalize pixel values
     rotation_range=20,  # Optional: data augmentation
@@ -15,6 +21,12 @@ train_datagen = ImageDataGenerator(
 test_datagen = ImageDataGenerator(
     rescale=1./255  # Normalize pixel values
 )
+
+'''
+--------------------------------
+Load Images From Data Directory
+--------------------------------
+'''
 
 train_dir = 'data/training'
 test_dir = 'data/testing'
@@ -33,6 +45,12 @@ validation_generator = test_datagen.flow_from_directory(
     class_mode='sparse'
 )
 
+'''
+-----------------
+Modify CNN Model
+-----------------
+'''
+
 model = models.Sequential()
 model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3)))
 model.add(layers.MaxPooling2D((2, 2)))
@@ -44,6 +62,12 @@ model.add(layers.Dense(64, activation='relu'))
 model.add(layers.Dense(4))  # Assuming 4 classes
 
 model.summary()
+
+'''
+------------------------
+Compile and Train Model
+------------------------
+'''
 
 model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
